@@ -7,12 +7,10 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-
 llm = ChatOpenAI(model="gpt-4o-mini")
 
-
 loader = WebBaseLoader(
-    web_paths=("https://lilianweng.github.io/posts/2023-06-23-agent/",),
+    web_paths=("https://www.hyundai.co.kr/story/CONT0000000000163479",),
 )
 docs = loader.load()
 
@@ -32,21 +30,19 @@ Answer:
 """)])
 
 
-
 def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
 
 
 # RunnablePassthrough 는 앞서 들어온 값을 그대로 자기 자리에 담는다
-# 이 경우는 "Task decomposition 에 대해서 설명해줘" 라는 입력이 retriever 에도 들어가고, question 에도 들어가는 셈
+# 이 경우는 "2024년 한국시리즈 우승팀은?" 라는 입력이 retriever 에도 들어가고, question 에도 들어가는 셈
 rag_chain = (
-    {"context": retriever | format_docs, "question": RunnablePassthrough()}
-    | prompt
-    | llm
-    | StrOutputParser()
+        {"context": retriever | format_docs, "question": RunnablePassthrough()}
+        | prompt
+        | llm
+        | StrOutputParser()
 )
 
-result = rag_chain.invoke("Task decomposition 에 대해서 설명해줘")
-
+result = rag_chain.invoke("2024년 한국시리즈 우승팀은?")
 
 print(result)

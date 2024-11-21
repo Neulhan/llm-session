@@ -5,11 +5,10 @@ from langchain_community.document_loaders import WebBaseLoader
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-
 llm = ChatOpenAI(model="gpt-4o-mini")
 
 loader = WebBaseLoader(
-    web_paths=("https://lilianweng.github.io/posts/2023-06-23-agent/",),
+    web_paths=("https://www.hyundai.co.kr/story/CONT0000000000163479",),
 )
 docs = loader.load()
 
@@ -20,7 +19,6 @@ vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings
 
 # Retrieve and generate using the relevant snippets of the blog.
 retriever = vectorstore.as_retriever()
-
 
 # 대표적인 RAG 프롬프트 템플릿을 한국어로 번역한 프롬프트
 # 영어 버전으로 사용하는게 LLM 입장에서는 알아듣기 편하나, 성능 낮은 모델의 경우 답변이 영어로 나올 수 있음.
@@ -37,8 +35,8 @@ Context: {context}
 Answer: """)
 
 # 딕셔너리 형태로 체이닝을 시켜도 Dictionary 의 Value 를 invoke 해준다.
-chain = {"context": retriever,} | prompt
+chain = {"context": retriever, } | prompt
 
-result = chain.invoke("What is Hallucination?")
+result = chain.invoke("2024년 한국시리즈 우승팀은?")
 
 print(result)

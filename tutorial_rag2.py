@@ -4,11 +4,10 @@ from langchain_community.document_loaders import WebBaseLoader
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-
 llm = ChatOpenAI(model="gpt-4o-mini")
 
 loader = WebBaseLoader(
-    web_paths=("https://lilianweng.github.io/posts/2023-06-23-agent/",),
+    web_paths=("https://www.hyundai.co.kr/story/CONT0000000000163479",),
 )
 docs = loader.load()
 
@@ -25,8 +24,7 @@ vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings
 retriever = vectorstore.as_retriever()
 
 # 리트리버는 invoke 호출 가능한 Runnable 이다. 체이닝이 가능하다는 뜻
-docs = retriever.invoke("What is Hallucination?")
-
+docs = retriever.invoke("2024년 한국시리즈 우승팀은?")
 
 for doc in docs:
     print(f"{doc=}", end="\n\n")

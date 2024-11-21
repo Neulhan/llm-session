@@ -5,11 +5,10 @@ from langchain_community.document_loaders import WebBaseLoader
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-
 llm = ChatOpenAI(model="gpt-4o-mini")
 
 loader = WebBaseLoader(
-    web_paths=("https://lilianweng.github.io/posts/2023-06-23-agent/",),
+    web_paths=("https://www.hyundai.co.kr/story/CONT0000000000163479",),
 )
 docs = loader.load()
 
@@ -19,7 +18,6 @@ splits = text_splitter.split_documents(docs)
 vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings())
 
 retriever = vectorstore.as_retriever()
-
 
 prompt = ChatPromptTemplate.from_template("""
 당신은 질문 답변 작업의 보조자입니다.
@@ -37,10 +35,10 @@ Answer: """)
 def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
 
+
 # invoke 가 안 되는 일반 함수도 아래처럼 체이닝이 가능하다. 이를 RunnableLambda 라고 부른다
 chain = {"context": retriever | format_docs} | prompt
 
-result = chain.invoke("What is Hallucination?")
-
+result = chain.invoke("2024년 한국시리즈 우승팀은?")
 
 print(result)

@@ -12,7 +12,7 @@ from langchain_pinecone import PineconeVectorStore
 llm = ChatOpenAI(model="gpt-4o-mini")
 
 loader = WebBaseLoader(
-    web_paths=("https://lilianweng.github.io/posts/2023-06-23-agent/",),
+    web_paths=("https://www.hyundai.co.kr/story/CONT0000000000163479",),
 )
 docs = loader.load()
 
@@ -55,7 +55,7 @@ rag_chain = (
     | StrOutputParser()
 )
 
-result = rag_chain.invoke("Task decomposition 에 대해서 설명해줘")
+result = rag_chain.invoke("2024년 한국시리즈 우승팀은?")
 
 
 print(result)

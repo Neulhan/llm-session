@@ -1,12 +1,11 @@
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-
 # 랭체인에는 이미 만들어져있는 여러가지 Loader 들이 존재한다.
 # (PDFLoader, GitLoader, GoogleDriveLoader, NotionDBLoader 등등)
 # 그 중에서 WebBaseLoader 는 웹에서 정보를 Load 해오는 Loader
 loader = WebBaseLoader(
-    web_paths=("https://lilianweng.github.io/posts/2023-06-23-agent/",),
+    web_paths=("https://www.hyundai.co.kr/story/CONT0000000000163479",),
 )
 
 # loader 는 .load() 라는 일관된 인터페이스를 가지고 있다.
